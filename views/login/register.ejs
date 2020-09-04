@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%-title%></title>
+    <style>
+        body {
+            background: linear-gradient(to right, #000000 0%,#ffffff 100%);
+        }
+        .box{
+            height: 450px;
+            width: 600px;
+            margin: auto;
+            margin-top: 15vh;
+            background-color: white;
+            overflow: hidden;
+            /* text-align: center; */
+        }
+        .box>form>div:first-child {
+            height: 60px;
+            width: 100%;
+            line-height: 60px;
+            text-align: center;
+            margin-top: 30px;
+            background-color: #0B9293;
+            color: white;
+            font-size: 20px;
+        }
+        .box>form>input:first-of-type {
+            height: 50px;
+            line-height: 50px;
+            width: 65%;
+            margin-top: 30px;
+            margin-left: 30px;
+            border: 1px solid #DEDEDE;
+            border-radius: 4px;
+            font-size: 15px;
+            position: relative;
+        }
+        .box>form span {
+            position: relative;
+            font-size: 10px;
+            left: 5px;
+        }
+        .box>form>input:nth-of-type(2) {
+            height: 50px;
+            line-height: 50px;
+            width: 65%;
+            margin-top: 30px;
+            margin-left: 30px;
+            border: 1px solid #DEDEDE;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+        .box>form>input:nth-of-type(3) {
+            height: 50px;
+            line-height: 50px;
+            width: 65%;
+            margin-top: 30px;
+            margin-left: 30px;
+            border: 1px solid #DEDEDE;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+        .box>form>input:last-of-type {
+            height: 50px;
+            width: 65%;
+            line-height: 50px;
+            background-color: gray;
+            color: white;
+            font-size: 18px;
+            text-align: center;
+            margin-top: 30px;
+            margin-left: 30px;
+            cursor: not-allowed;
+        }
+        .tips {
+            position: fixed;
+            left: 50%;
+            top: 40%;
+            transform: translate(-50%,-50%);
+            height: 200px;
+            width: 500px;
+            border-radius: 10px;
+            text-align: center;
+            background-color: rgba(255,255,255,0.9);
+        }
+        .tips span {
+            margin-top: 90px;
+            display: inline-block;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <form action="/rl/register" method="post">
+            <div><%-content%></div>
+            <input type="text" name="username" maxlength="20" placeholder='用户名(5-15个字符)' required='required'><span id="usernameTip" style="font-weight: bold;"></span>
+            <input type="password" name='password' placeholder='密码(6-20个字符)' maxlength="20" required='required'><span id="passwordTip" style="font-weight: bold;"></span>
+            <input type="password" name='repassword' placeholder='确认密码' maxlength="20" required='required'><span id="repasswordTip" style="font-weight: bold;"></span>
+            <input type="submit" value="注册">
+        </form>
+        <div class="tips" style="display: none;">
+            <span></span>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        let username = document.querySelector('.box>form>input:first-of-type')
+        let password = document.querySelector('.box>form>input:nth-of-type(2)')
+        let repassword = document.querySelector('.box>form>input:nth-of-type(3)')
+        let btn = document.querySelector('.box>form>input:last-of-type')
+        let tips = document.getElementsByClassName('tips')
+        let usernameTip = document.getElementById('usernameTip')
+        let passwordTip = document.getElementById('passwordTip')
+        let repasswordTip = document.getElementById('repasswordTip')
+        let span = document.querySelector('.tips>span')
+        //若三个输入框均满足条件，返回true,否则返回false
+        let ung = false
+        function submit(e) {
+            if(username.value.length >= 5 && username.value.length <= 15 && password.value.length >= 6 && password.value.length <= 20 && password.value === repassword.value && ung){
+                // console.log('可以提交')
+                return true
+            }else{
+                // console.log('不可以提交')
+                return false
+            }
+        }
+        //使用onchange监听用户名输入框的变化
+        username.onchange = function (e) {
+            let userle = false
+            if(username.value.length < 5 || username.value.length > 15){
+                // alert('用户名需要在5-15个字符之间')
+                // usernameTip.innerHTML = '用户名需要在5-15个字符之间'
+                // usernameTip.style.color = 'red'
+                userle = false
+            }else{
+                // usernameTip.innerHTML = '√'
+                // usernameTip.style.color = 'green'
+                userle = true
+            }
+            axios.get('/rl/axios',{
+                params: {
+                    username: username.value
+                }
+            }).then((res) => {
+                // console.log(res.data)
+                if(res.data && userle){
+                    //可以注册
+                    usernameTip.style.color = 'green'
+                    usernameTip.innerHTML = '√'
+                    ung = true;
+                }else if(res.data){
+                    ung = false;
+                    usernameTip.style.color = 'red'
+                    usernameTip.innerHTML = '需要在5-15个字符之间'
+                }else{
+                    ung = false;
+                    usernameTip.style.color = 'red'
+                    usernameTip.innerHTML = '该昵称已被注册'
+                }
+            })
+            if(submit()){
+                btn.style.backgroundColor = '#0B9293'
+                btn.style.cursor = 'pointer'
+            }else{
+                btn.style.backgroundColor = 'gray'
+                btn.style.cursor = 'not-allowed'
+            }
+        }
+        //使用onchange监听密码输入框的变化
+        password.onchange = function (e) {
+            if(password.value.length < 6 || password.value.length > 20){
+                passwordTip.innerHTML = '需要在6-20个字符之间'
+                passwordTip.style.color = 'red'
+                // alert('密码需要在6-20个字符之间')
+            }else{
+                passwordTip.innerHTML = '√'
+                passwordTip.style.color = 'green'
+            }
+            if(submit()){
+                btn.style.backgroundColor = '#0B9293'
+                btn.style.cursor = 'pointer'
+            }else{
+                btn.style.backgroundColor = 'gray'
+                btn.style.cursor = 'not-allowed'
+            }
+        }
+        //使用onchange监听确认密码输入框的变化
+        repassword.onchange = function (e) {
+            if((repassword.value !== password.value)){
+                repasswordTip.innerHTML = '两次输入密码不一致'
+                repasswordTip.style.color = 'red'
+                // alert('两次输入密码不一致')
+            }else{
+                repasswordTip.innerHTML = '√'
+                repasswordTip.style.color = 'green'
+            }
+            if(submit()){
+                btn.style.backgroundColor = '#0B9293'
+                btn.style.cursor = 'pointer'
+            }else{
+                btn.style.backgroundColor = 'gray'
+                btn.style.cursor = 'not-allowed'
+            }
+        }
+        btn.onclick = function(e) {
+            span.innerHTML = '注册成功，即将跳转至登录页○○○○○○'
+            console.log(tips.length)
+            tips[0].style.display = 'block'
+            setTimeout(() => {
+                location.href = 'http://localhost:3000/rl/login'
+            }, 4000);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body,.top,.bottom, .center .center-left{
+            padding: 0;
+            margin: 0;
+        }
+        html,body{
+            height: 100%;
+        }
+        .top,.bottom {
+            position: absolute;
+            background-color: #212121;
+            height: 50px;
+            left: 0;
+            right: 0;
+        }
+        .top {
+            top: 0;
+        }
+        .top-title {
+            width: 15%;
+            height: 100%;
+            text-align: center;
+            line-height: 50px;
+            float: left;
+            color: white;
+            font-size: 18px;
+            /* font-weight: bold; */
+        }
+        .user {
+            position: relative;
+            color: black;
+            float: right;
+            margin-right: 50px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .user:hover .username {
+            border-bottom: 5px solid #52AD74;
+        }
+        .user .user-info,.user .user-loginout {
+            display: none;
+            width: 100%;
+            text-align: center;
+        }
+        .user:hover .user-info,.user:hover .user-loginout {
+            display: block;
+        }
+        .user-info {
+            position: absolute;
+            top: 50px;
+            z-index: 5;
+            left: 0;
+            height: 40px;
+            line-height: 40px;
+            border: 1px solid #CAE5D6;
+            border-radius: 4px 4px 0 0;
+        }
+        .user-info:hover {
+            background-color: #57AB78;
+        }
+        .user-loginout {
+            position: absolute;
+            top: 90px;
+            z-index: 5;
+            left: 0;
+            height: 40px;
+            line-height: 40px;
+            border: 1px solid #CAE5D6;
+            border-radius: 0 0 4px 4px;
+        }
+        .user-loginout:hover {
+            background-color: #57AB78;
+        }
+        .username {
+            color: white;
+            padding: 0 15px 0 15px;
+            height: 45px;
+            /* width: 10%; */
+            line-height: 50px;
+            font-size: 18px;
+            /* background-color: blue; */
+            border-bottom: 5px solid transparent;
+        }
+        .bottom {
+            bottom: 0;
+        }
+        .center {
+            position: absolute;
+            top: 50px;
+            bottom: 50px;
+            width: 100%;
+            overflow: auto;
+        }
+        .center-left {
+            width: 15%;
+            height: 100%;
+            min-width: 200px;
+            float: left;
+            background-color: #ECECEC;
+        }
+        #iframe {
+            width: 85%;
+            height: 100%;
+            float: right;
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="top">
+        <div class="top-title">医院后台管理系统</div>
+        <div class="user">
+            <div class="username"><%-username%></div>
+            <div class="user-info">个人信息</div>
+            <div class="user-loginout">退出</div>
+        </div>
+    </div>
+    <div class="center">
+        <div class="center-left"></div>
+        <iframe id="iframe" src="http://localhost:3000/admin/news" frameborder="0"></iframe>
+    </div>
+    <div class="bottom"></div>
+    <script>
+        let userInfo = document.querySelector('.user-info')
+        let userLoginOut = document.querySelector('.user-loginout')
+        let iframe = document.getElementById('iframe')
+
+        userInfo.onclick = function (e) {
+            console.log('haha');
+            // window.location.replace('http://localhost:3000/rl/info')
+            iframe.src = 'http://localhost:3000/admin/user/info'
+        }
+        userLoginOut.onclick = function (e) {
+            window.location.replace("http://localhost:3000/rl/login")
+        }
+    </script>
+</body>
+</html>

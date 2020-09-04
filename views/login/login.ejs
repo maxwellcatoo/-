@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%-title%></title>
+    <style>
+        body {
+            background: linear-gradient(to right, #000000 0%,#ffffff 100%);
+        }
+        .box{
+            height: 380px;
+            width: 400px;
+            margin: auto;
+            margin-top: 15vh;
+            background-color: white;
+            overflow: hidden;
+            text-align: center;
+        }
+        .box div:first-child {
+            height: 60px;
+            width: 100%;
+            line-height: 60px;
+            text-align: center;
+            margin-top: 30px;
+            background-color: #0B9293;
+            color: white;
+            font-size: 20px;
+        }
+        .box input:first-of-type {
+            height: 50px;
+            line-height: 50px;
+            width: 85%;
+            margin-top: 30px;
+            border: 1px solid #DEDEDE;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+        .box input:nth-of-type(2) {
+            height: 50px;
+            line-height: 50px;
+            width: 85%;
+            margin-top: 30px;
+            border: 1px solid #DEDEDE;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+        .box input:last-of-type {
+            height: 50px;
+            width: 85%;
+            line-height: 50px;
+            background-color: #0B9293;
+            color: white;
+            font-size: 18px;
+            text-align: center;
+            margin-top: 30px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <form action="/rl/login" method="post">
+            <div><%-content%></div>
+            <input type="text" name="username" maxlength="20" placeholder='用户名' required='required'>
+            <input type="password" name='password' placeholder='密码' required='required'>
+            <input type="submit" value="<%-loginType%>">
+        </form>
+    </div>
+    <script>
+        /* let username = document.querySelector('.box>input:first-of-type')
+        let password = document.querySelector('.box>input:nth-of-type(2)')
+        let btn = document.querySelector('.box>input:last-of-type')
+        if(username.value === ''|| password.value === ''){
+            btn.style.cursor = 'not-allowed'
+        }else{
+            btn.style.cursor = 'pointer'
+        } */
+        document.write('随便写写')
+    </script>
+</body>
+</html>
