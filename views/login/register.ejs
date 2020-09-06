@@ -141,7 +141,8 @@
                 // usernameTip.style.color = 'green'
                 userle = true
             }
-            axios.get('/rl/axios',{
+
+            axios.get('http://localhost:3000/rl/axios',{
                 params: {
                     username: username.value
                 }
@@ -170,6 +171,7 @@
                 btn.style.cursor = 'not-allowed'
             }
         }
+
         //使用onchange监听密码输入框的变化
         password.onchange = function (e) {
             if(password.value.length < 6 || password.value.length > 20){

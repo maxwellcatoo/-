@@ -1,4 +1,4 @@
-
+var bodyParser = require('body-parser')
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -19,23 +19,6 @@ app.use(session({
   },
   saveUninitialized: true //是否保存初始化的session
 }))
-// 连接数据库
-/* let options = {
-  host: "localhost",
-  port: "3306",//可不写，不写的话默认是3306
-  user: "root",
-  password: "123456",
-  database: "hospitalms"
-}
-
-let con = mysql.createConnection(options)
-con.connect(err => {
-  if(err){
-    console.log('数据库连接失败')
-  }else{
-    console.log('数据库连接成功')
-  }
-}) */
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -46,6 +29,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded());
 
 //主页
 app.get('/',(req,res) => {

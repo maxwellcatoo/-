@@ -13,7 +13,7 @@ router.get('/register',(req,res) => {
 router.post('/register',async (req,res) => {
   let username = req.body.username
   let password = req.body.password
-  let sqlStr = 'insert into user (username,password,roleid) values (?,?,1)'
+  let sqlStr = 'insert into user (username,password,roleid) values (?,?,3)'
   await sqlQuery(sqlStr,[username,password])
   console.log('注册成功')
   // let result = await sqlQuery(sqlStr,[username])
@@ -49,6 +49,18 @@ router.post('/login',async (req,res) => {
   }else{
     // req.session.username = undefined
     res.redirect('/rl/login')
+  }
+})
+
+router.get('/axios',async (req,res) => {
+  let username = req.query.username
+  let sqlStr = 'select * from user where username = ?'
+  let result = await sqlQuery(sqlStr,[username])
+  // console.log(result)
+  if(result.length !== 0){
+    res.send(false)
+  }else{
+    res.send(true)
   }
 })
 

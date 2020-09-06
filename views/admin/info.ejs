@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>账号信息</title>
+    <style>
+        body,html {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .title {
+            width: calc(100% - 30px);
+            height: 40px;
+            line-height: 40px;
+            background-color: #ECECEC;
+            text-align: left;
+            padding: 0 0 0 30px;
+            margin: 0;
+        }
+        .img {
+            margin-top: 20px;
+            height: 100px;
+        }
+        .img-div {
+            display: block;
+            float: left;
+            text-align: right;
+            width: 100px;
+            height: 100px;
+            line-height: 100px;
+            padding: 0 20px 0 0;
+        }
+        .img>div:nth-of-type(2) {
+            position: relative;
+            height: 100px;
+            width: 100px;
+            border-radius: 50%;
+            /* border: 1px solid red; */
+            float: left;
+            overflow: hidden;
+        }
+        img {
+            height: 100px;
+            width: 100px;
+        }
+        .img-btn {
+            position: relative;
+            left: 30px;
+            top: 20px;
+        }
+        .div {
+            margin-top: 10px;
+            display: inline-block;
+            text-align: right;
+            width: 100px;
+            height: 50px;
+            line-height: 50px;
+            padding: 0 20px 0 0;
+        }
+        #power {
+            display: inline-block;
+            height: 50px;
+            line-height: 50px;
+            margin-top: 10px;
+        }
+        .input {
+            height: 35px;
+            border: 1px solid #DEDEDE;
+            size: 20;
+            font-size: 16px;
+        }
+        form div:last-of-type {
+            margin-top: -10px;
+        }
+        form>input:last-of-type {
+            height: 35px;
+            width: 65px;
+            color: white;
+            border-radius: 5px;
+        }
+        label {
+            text-align: center;
+            height: 50px;
+            line-height: 50px;
+            /* padding-top: 15px; */
+        }
+        .radio {
+            vertical-align: middle;
+            margin-top: -2px;
+            height: 15px;
+            width: 15px;
+        }
+        span {
+            display: inline-block;
+            text-indent: 18px;
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部标题 -->
+    <div class="title">个人信息</div>
+    <!-- 头像 -->
+    <div class="img">
+        <div class="img-div">个人头像</div>
+        <div title="点击修改头像">
+            <input class="upLoad" type="file" value="上传" style="position: absolute;width: 100px;height: 100px;opacity: 0;border-radius: 50%;">
+            <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1599318727964&di=89ab4a2927b429eb6e729134b1c9e846&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201410%2F09%2F20141009224754_AswrQ.jpeg" alt="无法显示">
+        </div><br/>
+        <input class="img-btn" type="button" value="修改">
+    </div>
+    <!-- 表单提交 -->
+    <form action="/admin/user/info" method="POST">
+        <div class="div">登录名</div><input type="text" class="username input" name="username" value = <%-username%>><span></span><br/>
+        <div class="div">手机</div><input type="text" name="mobile" class="input mobile" value = <%-mobile%>><br/>
+        <div class="div">邮箱</div><input type="text" name="email" class="input email" value = <%-email%>><br/>
+        <div id="power">
+            <div class="div">权限</div>
+            <label hahafor><input class="radio" type="radio" name="power">管理员</label>
+            <input class="radio" type="radio" name="power" id="two"><label for="two">医生</label>
+            <input class="radio" type="radio" name="power" id="thr"><label for="thr">患者</label>
+        </div>
+        <br/>
+        <div class="div">密码</div><input class="password input" type="text" name="password" value = <%-password%>><br/>
+        <div class="div">确认密码</div><input class="repassword input" type="text"><span></span><br/>
+        <div class="div"></div><input class="btn" style="cursor: not-allowed;background-color: gray;" type="submit" value="修改" onclick="return false">
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        
+        let span1 = document.querySelector('form span:first-of-type')
+        let username = document.querySelector('.username')
+        let btn = document.querySelector('.btn')
+        let email = document.querySelector('.email')
+        let mobile = document.querySelector('.mobile')
+        let password = document.querySelector('.password')
+        let repassword = document.querySelector('.repassword')
+        let span2 = document.querySelector('form span:last-of-type')
+
+        
+        let oldUsername = username.value
+        let oldPassword = password.value
+        let oldEmail = email.value
+        let oldMobile = mobile.value
+        // username.onchange = function(e) {
+        //     console.log('haaha')
+        // }
+        function isSubmit() {
+            if(btn.style.cursor === 'pointer'){
+                console.log('pointer')
+                return true
+            }else{
+                console.log('not-allowed')
+                return false
+            }
+        }
+
+        function submit(e) {
+            if(oldUsername===username.value && oldPassword===password.value && oldEmail===email.value && oldMobile===mobile.value) {
+                return false
+            }else{
+                return true
+            }
+        }
+
+        //这个只是单传的把本地图片渲染到了浏览器上，服务器端还啥都没有
+        document.querySelector('.upLoad').onchange = function(e) {
+            // let obj = document.querySelector('.upLoad')  等同于下面这个
+            let obj = this
+            document.querySelector('img').src = window.URL.createObjectURL(obj.files[0])
+        }
+
+        //这个是向服务器端传图片，服务器端成功后返回数据，前端接到后显示一个修改成功的提示信息
+        document.querySelector('.img-btn').onclick = function(e) {
+            let forms = new FormData()
+            let configs = { // 上传文件 请求头要设置成下面这样
+                headers:{'Content-Type':'multipart/form-data'}
+            };
+            forms.append('file',document.querySelector('.upLoad').files[0]);// 获取上传图片信息
+            forms.append('type','img'); // 添加一些图片的自定义信息
+            forms.append('name','a.jpg');
+            axios.get('/admin/user/imgonload',forms,configs)
+            .then(res => {
+                alert('头像上传成功')
+            })
+        }
+
+        username.onchange = function(e) {
+            axios.get('http://localhost:3000/admin/user/axios',{
+                params: {
+                    username: username.value
+                }
+            }).then(res => {
+                console.log(res)
+                if(res.data){
+                    span1.innerHTML = ''
+                    btn.style.cursor = 'pointer'
+                    btn.style.backgroundColor = '#289EA1'
+                }else{
+                    span1.innerHTML = '该用户名已被注册'
+                    btn.style.cursor = 'not-allowed'
+                    btn.style.backgroundColor = 'gray'
+                }
+            })
+        }
+
+        email.onchange = function(e) {
+            if(submit()){
+                btn.style.cursor = 'pointer'
+                btn.style.backgroundColor = '#289EA1'
+            }else{
+                btn.style.cursor = 'not-allowed'
+                btn.style.backgroundColor = 'gray'
+            }
+        }
+        mobile.onchange = function(e) {
+            if(submit()) {
+                btn.style.cursor = 'pointer'
+                btn.style.backgroundColor = '#289EA1'
+            }else{
+                btn.style.cursor = 'not-allowed'
+                btn.style.backgroundColor = 'gray'
+            }
+        }
+
+        password.onchange = function(e) {
+            if(password.value !== repassword.value){
+                btn.style.cursor = 'not-allowed'
+                btn.style.backgroundColor = 'gray'
+                span2.innerHTML = '两次输入密码不一致'
+            }else{
+                span2.innerHTML = ''
+                btn.style.cursor = 'pointer'
+                btn.style.backgroundColor = '#289EA1'
+            }
+        }
+        repassword.onchange = function(e) {
+            if(repassword.value !== password.value){
+                span2.innerHTML = '两次输入密码不一致'
+                btn.style.cursor = 'not-allowed'
+                btn.style.backgroundColor = 'gray'
+            }else{
+                span2.innerHTML = ''
+                btn.style.cursor = 'pointer'
+                btn.style.backgroundColor = '#289EA1'
+            }
+        }
+    </script>
+</body>
+</html>
