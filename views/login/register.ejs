@@ -97,7 +97,7 @@
     <div class="box">
         <form action="/rl/register" method="post">
             <div><%-content%></div>
-            <input type="text" name="username" maxlength="20" placeholder='用户名(5-15个字符)' required='required'><span id="usernameTip" style="font-weight: bold;"></span>
+            <input type="text" name="username" maxlength="20" placeholder='用户名(2-15个字符)' required='required'><span id="usernameTip" style="font-weight: bold;"></span>
             <input type="password" name='password' placeholder='密码(6-20个字符)' maxlength="20" required='required'><span id="passwordTip" style="font-weight: bold;"></span>
             <input type="password" name='repassword' placeholder='确认密码' maxlength="20" required='required'><span id="repasswordTip" style="font-weight: bold;"></span>
             <input type="submit" value="注册">
@@ -120,7 +120,7 @@
         //若三个输入框均满足条件，返回true,否则返回false
         let ung = false
         function submit(e) {
-            if(username.value.length >= 5 && username.value.length <= 15 && password.value.length >= 6 && password.value.length <= 20 && password.value === repassword.value && ung){
+            if(username.value.length >= 2 && username.value.length <= 15 && password.value.length >= 6 && password.value.length <= 20 && password.value === repassword.value && ung){
                 // console.log('可以提交')
                 return true
             }else{
@@ -131,7 +131,7 @@
         //使用onchange监听用户名输入框的变化
         username.onchange = function (e) {
             let userle = false
-            if(username.value.length < 5 || username.value.length > 15){
+            if(username.value.length < 2 || username.value.length > 15){
                 // alert('用户名需要在5-15个字符之间')
                 // usernameTip.innerHTML = '用户名需要在5-15个字符之间'
                 // usernameTip.style.color = 'red'
@@ -156,7 +156,7 @@
                 }else if(res.data){
                     ung = false;
                     usernameTip.style.color = 'red'
-                    usernameTip.innerHTML = '需要在5-15个字符之间'
+                    usernameTip.innerHTML = '需要在2-15个字符之间'
                 }else{
                     ung = false;
                     usernameTip.style.color = 'red'
