@@ -6,7 +6,7 @@ const os = require('os')
 
 const router = express.Router();
 const sqlQuery = require('../../public/module/lcMysql')
-const mkdir = require('../../public/module/fs')
+// const mkdir = require('../../public/module/fs')
 
 /* 后台用户管理. */
 router.get('/', function(req, res, next) {

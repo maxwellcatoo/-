@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body,html{
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            height: 50px;
+            line-height: 50px;
+            width: calc(100vw - 50px);
+            background-color: #EDEDEF;
+            padding-left: 50px;
+            font-size: 20px;
+        }
+        .search {
+            margin-left: 20px;
+            margin-top: 15px;
+            height: 40px;
+        }
+        .list-header {
+            height: 50px;
+            width: 100vw;
+            background-color: #F1F1F0;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+        .del-list {
+            margin-left: 20px;
+            background-color: #FF641f;
+            color: white;
+            height: 35px;
+            width: 90px;
+        }
+        .add-list {
+            background-color: #008787;
+            color: white;
+            height: 35px;
+            width: 60px;
+            margin-left: 12px;
+        }
+        .count {
+            float: right;
+            line-height: 50px;
+            margin-right: 100px;
+        }
+        table {
+            width: 95%;
+            margin-left: 15px;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        .del-check {
+            width: 16px;
+            height: 16px;
+        }
+        th {
+            height: 50px;
+        }
+        .td-img {
+            height: 65px;
+        }
+        .td-img>img {
+            border-radius: 50%;
+            height: 60px;
+            width: 60px;
+        }
+        .pages{
+            width: 87%;
+            text-align: center;
+            height: 50px;
+            line-height: 50px;
+        }
+        .page {
+            width: 30px;
+            height: 30px;
+        }
+        .page-to {
+            width: 30px;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+    <header><%-title%></header>
+    <input class="search" type="search" placeholder='请输入用户名'>
+    <input class="add-list" type="button" value="搜索">
+    <br>
+    <div class="list-header">
+        <input class="del-list" type="button" value="批量删除">
+        <input class="add-list" type="button" value="添加">
+        <div class="count">共有数据:<span><%-numberCount%></span>条</div>
+    </div>
+    <table border="1px">
+        <thead>
+            <tr>
+                <th><input class="check-all" style="width: 20px;height: 20px;" title="全选" type="checkbox"></th>
+                <th>ID</th>
+                <th>登录名</th>
+                <th>手机</th>
+                <th>邮箱</th>
+                <th>角色</th>
+                <th>头像</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <%for(let i=0;i<userlist.length;i++){%>
+            <tr>
+                <td><input class="del-check" type="checkbox"></td>
+                <td><%-userlist[i].id%></td>
+                <td><%-userlist[i].username%></td>
+                <td><%-userlist[i].mobile%></td>
+                <td><%-userlist[i].email%></td>
+                <td><%-userlist[i].roleid%></td>
+                <td class="td-img"><img src="http://localhost:3000/<%-userlist[i].imgHead%>" alt=""></td>
+                <td>操作</td>
+            </tr>
+            <%}%>
+        </tbody>
+    </table>
+    <div class="pages">
+        <input class="page-to" type="button" value="<<">
+        <%for(let i=0;i<numberCount/5;i++){%>
+            <input class="page" type="button" value="<%-i+1%>">
+        <%}%>
+        <input class="page-to" type="button" value=">>">
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        let checkAll = document.querySelector('.check-all')
+        let delCheck = document.querySelectorAll('.del-check')
+        let delList = document.querySelector('.del-list')
+
+        checkAll.onclick = function(e) {
+            if(checkAll.checked === true){
+                delCheck.forEach((item,i) => {
+                    item.checked = true
+                })
+            }else {
+                delCheck.forEach((item,i) => {
+                    item.checked = false
+                })
+            }
+        }
+
+        delList.onclick = function(e) {
+            let arr = []
+            delCheck.forEach((item,i) => {
+                if(item.parentElement.parentElement.children[0].children[0].checked === true){
+                    arr.push(item.parentElement.parentElement.children[2].textContent)
+                }
+            })
+            console.log(arr)
+            axios.get('http://localhost:3000/admin/userlist/del',{
+                params:{
+                    arr: arr
+                }
+            }).then(res => {
+                if(res.data){
+                    alert('删除成功')
+                    location.reload()
+                }
+            })
+        }
+    </script>
+</body>
+</html>

@@ -9,6 +9,10 @@
             padding: 0;
             margin: 0;
         }
+        a {
+            text-decoration: none;
+            color: black;
+        }
         html,body{
             height: 100%;
         }
@@ -19,6 +23,8 @@
             left: 0;
             right: 0;
         }
+
+    /* 顶部 */
         .top {
             top: 0;
         }
@@ -30,8 +36,9 @@
             float: left;
             color: white;
             font-size: 18px;
-            /* font-weight: bold; */
         }
+
+        /* 用户昵称及个人中心入口 */
         .user {
             position: relative;
             color: black;
@@ -97,12 +104,42 @@
             width: 100%;
             overflow: auto;
         }
+
+    /* 用户侧边栏 */
         .center-left {
             width: 15%;
             height: 100%;
             min-width: 200px;
             float: left;
             background-color: #ECECEC;
+            /* border-right: 1px solid #CDCDCD; */
+        }
+        .center-left>div {
+            background-color: #ECECEC;
+            width: 100%;
+            border-bottom: 1px solid #DEDEDE;
+            box-shadow: 0 1px 0 #DEDEDE;
+            padding-left: 50px;
+            cursor: pointer;
+        }
+
+        /* 用户管理 */
+        .users-manager>div {
+            width: 100%;
+            height: 50px;
+            line-height: 50px;
+            margin-left: 30px;
+            display: none;
+            box-shadow: 0 1px 0 #DEDEDE;
+        }
+        .users-manager:hover div {
+            display: block;
+        }
+        .users-manager-title {
+            height: 50px;
+            line-height: 50px;
+            margin-left: 0 !important;
+            display: block !important;
         }
         #iframe {
             width: 85%;
@@ -123,13 +160,19 @@
     </div>
     <div class="center">
         <div class="center-left">
-            <div class="users-content"></div>
-            <div class="users-content"></div>
-            <div class="users-content"></div>
-            <div class="users-content"></div>
-            <div class="users-content"></div>
+            <div class="users-manager">
+                <div class="users-manager-title">用户管理</div>
+                <div class="users-list1"><a href="http://localhost:3000/admin/userlist/list1" target="iframe">用户列表1</a></div>
+                <div class="users-list2"><a href="http://localhost:3000/admin/userlist/list2" target="iframe">用户列表2</a></div>
+                <div class="users-role"><a href="">角色管理</a></div>
+                <div class="users-juris"><a href="">权限管理</a></div>
+            </div>
+            <div class="article-manager">文章管理</div>
+            <div class="order-manager">订单管理</div>
+            <div class="admin-manager">管理员管理</div>
+            <div class="system-stati">系统统计</div>
         </div>
-        <iframe id="iframe" src="http://localhost:3000/admin/news" frameborder="0"></iframe>
+        <iframe id="iframe" src="http://localhost:3000/admin/news" name="iframe" frameborder="0"></iframe>
     </div>
     <div class="bottom"></div>
     <script>

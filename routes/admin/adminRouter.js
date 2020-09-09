@@ -5,6 +5,7 @@ var doctorRouter = require('./doctorRouter')
 var newsRouter = require('./newsRouter')
 var patientRouter = require('./patientRouter')
 var userRouter = require('./userRouter')
+const userlistRouter = require('./usersManager/userlistRouter')
 
 function permisson(req,res,next) {
     // console.log(req.session)
@@ -32,6 +33,9 @@ router.use('/doctor',doctorRouter)
 router.use('/patient',patientRouter)
 /* 后台管理页面 */
 router.use('/user',userRouter)
+
+
+router.use('/userlist',userlistRouter)
 
 
 
