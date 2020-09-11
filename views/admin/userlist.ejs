@@ -14,31 +14,31 @@
         header {
             height: 50px;
             line-height: 50px;
-            width: calc(100vw - 50px);
+            width: calc(100% - 50px);
             background-color: #EDEDEF;
             padding-left: 50px;
             font-size: 20px;
         }
         .search {
-            margin-left: 20px;
-            margin-top: 15px;
+            margin-left: 15px;
+            margin-top: 10px;
             height: 40px;
         }
         .list-header {
             height: 50px;
-            width: 100vw;
+            line-height: 50px;
+            width: calc(99% - 15px);
             background-color: #F1F1F0;
-            margin-top: 15px;
-            overflow: hidden;
+            margin-top: 10px;
+            margin-left: 15px;
         }
         .del-list {
-            margin-left: 20px;
             background-color: #FF641f;
             color: white;
             height: 35px;
             width: 90px;
         }
-        .add-list {
+        .add-list ,.search-btn {
             background-color: #008787;
             color: white;
             height: 35px;
@@ -51,8 +51,9 @@
             margin-right: 100px;
         }
         table {
-            width: 95%;
+            width: calc(99% - 15px);
             margin-left: 15px;
+            margin-top: 10px;
             border-collapse: collapse;
             text-align: center;
         }
@@ -62,9 +63,10 @@
         }
         th {
             height: 50px;
+            background-color: #F1F1F0;
         }
         .td-img {
-            height: 65px;
+            height: 60px;
         }
         .td-img>img {
             border-radius: 50%;
@@ -90,7 +92,7 @@
 <body>
     <header><%-title%></header>
     <input class="search" type="search" placeholder='请输入用户名'>
-    <input class="add-list" type="button" value="搜索">
+    <input class="search-btn" type="button" value="搜索">
     <br>
     <div class="list-header">
         <input class="del-list" type="button" value="批量删除">
@@ -119,8 +121,8 @@
                 <td><%-userlist[i].mobile%></td>
                 <td><%-userlist[i].email%></td>
                 <td><%-userlist[i].roleid%></td>
-                <td class="td-img"><img src="http://localhost:3000/<%-userlist[i].imgHead%>" alt=""></td>
-                <td>操作</td>
+                <td class="td-img"><img src="http://localhost:3000/<%-userlist[i].imgHead?userlist[i].imgHead:'users/default.jpg'%>" alt=""></td>
+                <td><span onclick="edit(this)"><svg t="1599748520662" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2871" id="mx_n_1599748520663" width="23" height="23"><path d="M224.000749 869.504402 192.000832 869.504402 192.000832 837.504485 160.000915 837.504485 160.000915 805.504568 192.000832 773.504651 256.000666 837.504485 224.000749 869.504402ZM96.001082 773.504651 96.001082 933.504235 256.000666 933.504235 735.999418 453.505483 575.999834 293.505899 96.001082 773.504651ZM882.591036 216.098101 813.407216 146.91428C788.255282 121.762346 747.807387 121.698346 722.879452 146.626281L639.999667 229.506066 799.999251 389.50565 882.879036 306.625865C907.710971 281.79393 907.678971 241.186035 882.591036 216.098101" p-id="2872"></path></svg></span><span onclick="delet(this)"><svg t="1599748653582" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4300" width="23" height="23"><path d="M516.606 107.93c-82.644 0-149.719 65.518-152.573 147.772H171.371c-21.406 0-38.92 17.385-38.92 38.921 0 21.407 17.385 38.922 38.921 38.922h42.943v435.402c0 81.735 55.399 148.55 123.901 148.55h348.995c68.373 0 123.9-66.426 123.9-148.55V333.805h38.922c21.407 0 38.921-17.386 38.921-38.922 0-21.407-17.385-38.922-38.92-38.922H668.918c-2.466-82.512-69.67-148.03-152.313-148.03z m-79.66 147.772c2.855-42.165 37.236-74.858 79.79-74.858s76.934 32.823 79.4 74.858h-159.19z m-98.86 589.012c-24.261 0-50.987-31.138-50.987-75.767V333.805h450.97v435.53c0 44.5-26.726 75.768-50.988 75.768H338.086v-0.39z m0 0" p-id="4301"></path><path d="M390.37 751.173c17.774 0 32.435-17.774 32.435-40.09V482.356c0-22.315-14.531-40.09-32.434-40.09-17.775 0-32.435 17.775-32.435 40.09v228.729c0 22.184 14.27 40.089 32.435 40.089z m117.414 0c17.774 0 32.434-17.774 32.434-40.09V482.356c0-22.315-14.531-40.09-32.434-40.09-17.774 0-32.435 17.775-32.435 40.09v228.729c0 22.184 14.66 40.089 32.435 40.089z m123.51 0c17.774 0 32.435-17.774 32.435-40.09V482.356c0-22.315-14.53-40.09-32.435-40.09-17.774 0-32.434 17.775-32.434 40.09v228.729c0 22.184 14.141 40.089 32.434 40.089z m0 0" p-id="4302"></path></svg></span></td>
             </tr>
             <%}%>
         </tbody>
@@ -168,6 +170,42 @@
                     location.reload()
                 }
             })
+        }
+        //添加按钮
+        let add = document.querySelector('.add-list')
+        add.onclick = function (e) {
+            window.open('http://localhost:3000/admin/userlist/add','_blank','location=no')
+        }
+
+        //编辑用户信息功能
+        function edit(e) {
+            let id = e.parentElement.parentElement.children[1].textContent
+            axios.post('http://localhost:3000/admin/userlist/editcross',{
+                    id: id
+            }).then(res => {
+                if(res.data){
+                    window.open('http://localhost:3000/admin/userlist/edit','_blank','location=no')
+                }else{
+                    alert('编辑失败')
+                }
+            })
+        }
+        //删除用户功能
+        function delet(e) {
+            let id = e.parentElement.parentElement.children[1].textContent
+            if(confirm('确定要删除吗？')){
+                axios.post('http://localhost:3000/admin/userlist/delet',{
+                    id: id
+                }).then(res => {
+                    if(res.data){
+                        alert('删除成功')
+                        location.reload()
+                    }else{
+                        alert('删除失败')
+                        location.reload()
+                    }
+                })
+            }
         }
     </script>
 </body>

@@ -34,6 +34,7 @@ router.get('/info',async (req,res) => {
     imgSrc: imgSrc
   })
 })
+
 router.post('/info',async (req,res) => {
   let username = req.session.username
   let newUsername = req.body.username
@@ -66,7 +67,7 @@ router.get('/axios',async (req,res) => {
 // form表单提交头像文件
 router.post('/imghead',multer({
   dest: './public/users/'
-}).single('file'),async (req,res,next) => {
+}).single('file'),async (req,res) => {
   if(!req.file) {
     res.send('上传文件不能为空！')
     return

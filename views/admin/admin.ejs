@@ -101,7 +101,8 @@
             position: absolute;
             top: 50px;
             bottom: 50px;
-            width: 100%;
+            left: 0;
+            right: 0;
             overflow: auto;
         }
 
@@ -109,14 +110,12 @@
         .center-left {
             width: 15%;
             height: 100%;
-            min-width: 200px;
             float: left;
             background-color: #ECECEC;
-            /* border-right: 1px solid #CDCDCD; */
         }
         .center-left>div {
             background-color: #ECECEC;
-            width: 100%;
+            width: calc(100% - 50px);
             border-bottom: 1px solid #DEDEDE;
             box-shadow: 0 1px 0 #DEDEDE;
             padding-left: 50px;
@@ -125,7 +124,7 @@
 
         /* 用户管理 */
         .users-manager>div {
-            width: 100%;
+            width: calc(100% - 50px);
             height: 50px;
             line-height: 50px;
             margin-left: 30px;
@@ -145,7 +144,7 @@
             width: 85%;
             height: 100%;
             float: right;
-            background-color: #F6F6F6;
+            background-color: white;
         }
     </style>
 </head>

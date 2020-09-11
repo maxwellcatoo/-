@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 let sqlQuery = require('../../public/module/lcMysql')
 
-/* 注册登录页. */
+////注册登录页
 router.get('/register',(req,res) => {
   res.render('login/register.ejs',{
     title: '注册页面',
@@ -10,6 +10,7 @@ router.get('/register',(req,res) => {
     loginType: '注册'
   })
 })
+
 router.post('/register',async (req,res) => {
   let username = req.body.username
   let password = req.body.password
@@ -26,7 +27,21 @@ router.post('/register',async (req,res) => {
   // }
 })
 
+//查询该用户名是否已经注册
+router.get('/axios',async (req,res) => {
+  let username = req.query.username
+  let sqlStr = 'select id from user where username = ?'
+  let result = await sqlQuery(sqlStr,[username])
+  // console.log(result)
+  if(result.length !== 0){
+    res.send(false)
+  }else{
+    res.send(true)
+  }
+})
 
+
+////登录页面
 router.get('/login', function(req, res) {
   req.session.destroy()
   res.render('login/login.ejs',{
@@ -51,17 +66,4 @@ router.post('/login',async (req,res) => {
     res.redirect('/rl/login')
   }
 })
-
-router.get('/axios',async (req,res) => {
-  let username = req.query.username
-  let sqlStr = 'select * from user where username = ?'
-  let result = await sqlQuery(sqlStr,[username])
-  // console.log(result)
-  if(result.length !== 0){
-    res.send(false)
-  }else{
-    res.send(true)
-  }
-})
-
 module.exports = router;

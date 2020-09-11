@@ -20,40 +20,20 @@
             padding: 0 0 0 30px;
             margin: 0;
         }
-        .img {
-            margin-top: 20px;
-            height: 100px;
-            border-radius: 50%;
-        }
         .img-div {
             display: block;
             float: left;
             text-align: right;
             width: 100px;
             height: 100px;
-            line-height: 100px;
+            line-height: 100px !important;
             padding: 0 20px 0 0;
-        }
-        .img>div:nth-of-type(2) {
-            position: relative;
-            height: 100px;
-            width: 100px;
-            border-radius: 50%;
-            /* border: 1px solid red; */
-            float: left;
-            overflow: hidden;
         }
         img {
             height: 100px;
             width: 100px;
             border-radius: 50%;
-        }
-        .img-btn {
-            position: relative;
-            left: 253px;
-            top: -92px;
-            background-color: #289EA1;
-            cursor: pointer;
+            margin-top: 10px;
         }
         .div {
             margin-top: 10px;
@@ -106,23 +86,16 @@
 </head>
 <body>
     <!-- 顶部标题 -->
-    <div class="title">个人信息</div>
-    <!-- 头像 -->
-    <div class="img">
-        <div class="img-div">个人头像</div>
-        <form action="/admin/user/imghead" method="POST" enctype="multipart/form-data">
-            <div title="点击修改头像">
-                    <input name="file" class="upLoad" type="file" value="上传" style="position: absolute;width: 100px;height: 100px;opacity: 0;border-radius: 50%;">
-                    <img src="http://localhost:3000/<%-imgSrc%>" alt="无法显示">
-            </div><br/>
-            <input class="img-btn" type="submit" value="修改">
-        </form>
-    </div>
-    <!-- 表单提交 -->
-    <form action="/admin/user/info" method="POST">
-        <div class="div">登录名</div><input type="text" class="username input" name="username" value = <%-username%>><span></span><br/>
-        <div class="div">手机</div><input type="text" name="mobile" class="input mobile" value = <%-mobile%>><br/>
-        <div class="div">邮箱</div><input type="text" name="email" class="input email" value = <%-email%>><br/>
+    <div class="title">用户添加</div>
+    <form action="/admin/userlist/add" method="POST" enctype="multipart/form-data">
+        <div class="div img-div">个人头像</div>
+        <div title="点击修改头像">
+            <input name="file" class="upLoad" type="file" value="上传" style="position: absolute;width: 100px;height: 100px;opacity: 0;border-radius: 50%;">
+            <img src="http://localhost:3000/users/default.jpg" alt="无法显示">
+        </div>
+        <div class="div">登录名</div><input type="text" class="username input" name="username"><span></span><br/>
+        <div class="div">手机</div><input type="text" name="mobile" class="input mobile"><br/>
+        <div class="div">邮箱</div><input type="text" name="email" class="input email"><br/>
         <div id="power">
             <div class="div">权限</div>
             <label hahafor><input class="radio" type="radio" name="power">管理员</label>
@@ -130,9 +103,9 @@
             <input class="radio" type="radio" name="power" id="thr"><label for="thr">患者</label>
         </div>
         <br/>
-        <div class="div">密码</div><input class="password input" type="text" name="password" value = <%-password%>><br/>
+        <div class="div">密码</div><input class="password input" type="text" name="password"><br/>
         <div class="div">确认密码</div><input class="repassword input" type="text"><span></span><br/>
-        <div class="div"></div><input class="btn" style="cursor: not-allowed;background-color: gray;" type="submit" value="修改" onclick="return isSubmit(e)">
+        <div class="div"></div><input class="btn" style="cursor: not-allowed;background-color: gray;" type="submit" value="添加" onclick="return isSubmit(e)">
     </form>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
@@ -146,15 +119,7 @@
         let repassword = document.querySelector('.repassword')
         let span2 = document.querySelector('form span:last-of-type')
 
-        
-        let oldUsername = username.value
-        let oldPassword = password.value
-        let oldEmail = email.value
-        let oldMobile = mobile.value
-        // username.onchange = function(e) {
-        //     console.log('haaha')
-        // }
-        function isSubmit() {
+        function isSubmit(event) {
             if(btn.style.cursor === 'pointer'){
                 console.log('pointer')
                 return true
@@ -164,9 +129,8 @@
             }
         }
 
-        //定义一个函数，来判断信息是否被更改了，该函数在每个输入框变化事件函数中均进行一次调用
         function submit(e) {
-            if(oldUsername===username.value && oldPassword===password.value && oldEmail===email.value && oldMobile===mobile.value) {
+            if(username.value !== '' || password.value !== '') {
                 return false
             }else{
                 return true
@@ -175,35 +139,21 @@
 
         //这个只是单传的把本地图片渲染到了浏览器上，服务器端还啥都没有
         document.querySelector('.upLoad').onchange = function(e) {
-            // let obj = document.querySelector('.upLoad')  等同于下面这一行
+            // let obj = document.querySelector('.upLoad')  等同于下面这个
             let obj = this
             document.querySelector('img').src = window.URL.createObjectURL(obj.files[0])
         }
 
-        //这个是向服务器端传图片，服务器端成功后返回数据，前端接到后显示一个修改成功的提示信息
-        /* document.querySelector('.img-btn').onclick = function(e) {
-            let forms = new FormData()
-            let configs = { // 上传文件 请求头要设置成下面这样
-                headers:{'Content-Type':'multipart/form-data'}
-            };
-            forms.append('file',document.querySelector('.upLoad').files[0]);// 获取上传图片信息
-            forms.append('type','img'); // 添加一些图片的自定义信息
-            forms.append('name','a.jpg');
-            axios.get('/admin/user/imgonload',forms,configs)
-            .then(res => {
-                alert('头像上传成功')
-            })
-        } */
 
         username.onchange = function(e) {
-            axios.get('http://localhost:3000/admin/user/axios',{
+            axios.get('http://localhost:3000/admin/userlist/axios',{
                 params: {
                     username: username.value
                 }
             }).then(res => {
                 console.log(res)
                 if(res.data){
-                    span1.innerHTML = ''
+                    span1.innerHTML = '√'
                     btn.style.cursor = 'pointer'
                     btn.style.backgroundColor = '#289EA1'
                 }else{
@@ -214,24 +164,6 @@
             })
         }
 
-        email.onchange = function(e) {
-            if(submit()){
-                btn.style.cursor = 'pointer'
-                btn.style.backgroundColor = '#289EA1'
-            }else{
-                btn.style.cursor = 'not-allowed'
-                btn.style.backgroundColor = 'gray'
-            }
-        }
-        mobile.onchange = function(e) {
-            if(submit()) {
-                btn.style.cursor = 'pointer'
-                btn.style.backgroundColor = '#289EA1'
-            }else{
-                btn.style.cursor = 'not-allowed'
-                btn.style.backgroundColor = 'gray'
-            }
-        }
 
         password.onchange = function(e) {
             if(password.value !== repassword.value){
@@ -239,7 +171,7 @@
                 btn.style.backgroundColor = 'gray'
                 span2.innerHTML = '两次输入密码不一致'
             }else{
-                span2.innerHTML = ''
+                span2.innerHTML = '√'
                 btn.style.cursor = 'pointer'
                 btn.style.backgroundColor = '#289EA1'
             }
@@ -250,7 +182,7 @@
                 btn.style.cursor = 'not-allowed'
                 btn.style.backgroundColor = 'gray'
             }else{
-                span2.innerHTML = ''
+                span2.innerHTML = '√'
                 btn.style.cursor = 'pointer'
                 btn.style.backgroundColor = '#289EA1'
             }
